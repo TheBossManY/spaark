@@ -8,13 +8,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Load env variables
+const PORT = process.env.PORT || 3001;
+const TARGET_BASE_PATH = process.env.TARGET_BASE_PATH || "./labels";
+const LABELS_DIR = TARGET_BASE_PATH;
+const STUDENT_DATA_PATH = process.env.STUDENT_DATA_PATH || "./students_data_200_with_roll.json";
+
 // Set up multer for file uploads
 const upload = multer({ dest: 'temp_uploads/' });
-
-// Define paths
-const TARGET_BASE_PATH = "C:/Users/PRAGALBH/Dropbox/PC/Desktop/ALL OF WEB DEV/Final Year Project SPAARK/labels";
-const LABELS_DIR = TARGET_BASE_PATH;
-const STUDENT_DATA_PATH = "C:/Users/PRAGALBH/Dropbox/PC/Desktop/ALL OF WEB DEV/students_data_200_with_roll.json";
 
 // Upload route: Handles student details and photo uploads
 app.post('/upload', upload.fields([
@@ -38,7 +39,7 @@ app.post('/upload', upload.fields([
       }
 
       // Default exam form status if student is found
-      const examFormStatus = student["exam-form"] || "NA"; // Use the database value or set as "NA" if not found
+      const examFormStatus = student["exam-form"] || "NA";
 
       // Create a folder for the student if not already exists
       const studentFolder = path.join(TARGET_BASE_PATH, name);
@@ -54,7 +55,7 @@ app.post('/upload', upload.fields([
       // Handle file renaming and saving
       for (let key in req.files) {
         const file = req.files[key][0];
-        const ext = path.extname(file.originalname);  // Retain original file extension
+        const ext = path.extname(file.originalname);
         const newFileName = renameMap[key] + ext;
         const newPath = path.join(studentFolder, newFileName);
         fs.renameSync(file.path, newPath);
@@ -67,10 +68,9 @@ app.post('/upload', upload.fields([
         status,
         rollnumber,
         college,
-        "examform": examFormStatus // Use status from the database
+        "examform": examFormStatus
       };
 
-      // Write the details to 'details.json' file
       fs.writeFileSync(
         path.join(studentFolder, 'details.json'),
         JSON.stringify(dataToSave, null, 2)
@@ -136,6 +136,6 @@ app.get('/check-exam-form-status', (req, res) => {
 });
 
 // Start server
-app.listen(3001, () => {
-  console.log('Server running on http://localhost:3001');
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

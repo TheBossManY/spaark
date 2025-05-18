@@ -16,7 +16,7 @@ const UserSelection = () => {
           />
           <h2 className="tile-title">Admin</h2>
         </div></a>
-        <a href="http://127.0.0.1:5500/index.html"><div className="tile">
+        <a href="https://campusguard.netlify.app/index2.html"><div className="tile">
           <img
             src={faculty} // Replace with a relevant Faculty image URL
             alt="Faculty"
@@ -25,7 +25,7 @@ const UserSelection = () => {
           <h2 className="tile-title">Faculty</h2>
         </div></a>
         
-        <a href="http://127.0.0.1:5500/index.html"><div className="tile">
+        <a href="https://campusguard.netlify.app/index2.html"><div className="tile">
           <img
             src={guard} // Replace with a relevant Guard image URL
             alt="Guard"
